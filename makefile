@@ -23,6 +23,9 @@ vpath %.c $(C_PATHS)
 
 all: $(BIN) 
 
+run: all
+	$(BIN)
+
 $(BIN): $(OBJS)
 	$(CC) $(CFLAGS) $(OBJS) -o $@ 
 
