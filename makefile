@@ -2,7 +2,11 @@
 
 
 CC=gcc
-CFLAGS=-std=c11 -g -Wall
+CFLAGS = -std=c11 -g -Wall
+CFLAGS += -Ilib/glfw/include -Ilib/glad/include
+LDFLAGS = lib/glfw/src/libglfw3.a lib/glad/src/glad.o
+LDFLAGS += -ldl
+
 SRC=src
 OBJ_DIR=obj
 BIN_DIR=bin
@@ -23,11 +27,16 @@ vpath %.c $(C_PATHS)
 
 all: $(BIN) 
 
+
+libs:
+	cd lib/glfw && cmake . && make
+	cd lib/glad/ && $(CC) -o src/glad.o -Iinclude -c src/glad.c
+
 run: all
 	$(BIN)
 
 $(BIN): $(OBJS)
-	$(CC) $(CFLAGS) $(OBJS) -o $@ 
+	$(CC) $(CFLAGS) $(OBJS) -o $@ $(LDFLAGS) 
 
 
 $(OBJ_DIR)/%.o: %.c
